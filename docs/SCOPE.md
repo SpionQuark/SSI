@@ -33,6 +33,12 @@ Written in Python (cause that is what I know)
 - functions with params
 - return values
 - comments being introduced with ``//`` as in Java
+- ``{}`` like in Java
+- ``()`` for parameters
+- Statements must end with ``;``
+- Leading ``.`` for numbers is rejected
+- Leading ``0`` for numbers is allowed
+- No multiline Strings, no escapes yet
 
 ### Built-Ins:
 - ``print``
