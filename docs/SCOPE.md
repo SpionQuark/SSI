@@ -67,3 +67,14 @@ Being able to build three test programs:
 - HelloWorld
 - FizzBuzz
 - HigherLower
+
+
+## Current state (commit: 1a57f049bc3326e0aea2da51490f55b434115b07)
+
+The code is now able to actually run expressions. Lexer, Parser and Evaluator work pretty good so far
+and considering how long some of the errors took to fix, it was a fun time.
+
+It can now run any calculation. Or, well, most. Sine and similar are missing. Squareroot and factor by are not
+implemented. Those should probably be added after we can assign values to something.
+
+Currently we have a fancy, overengineered calculator. 
