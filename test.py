@@ -186,3 +186,14 @@ def test_leftover_tokens():
 
 def test_block_returns_last_value():
     assert Evaluator().run("1 + 2; 10 - 4;") == 6.0
+
+@pytest.mark.parametrize("source, expected", [
+("3*-2;", -6.0),
+("3--2;", 5.0),
+("3+-2;", 1.0),
+("3/-2;", -1.5),
+("-(2+3);", -5.0),
+("(1+2)*(3+4);", 21.0),
+])
+def test_no_spacing(source, expected):
+    assert Evaluator().run(source) == expected

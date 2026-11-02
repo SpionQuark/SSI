@@ -69,28 +69,19 @@ class Lexer:
         return Token('STRING', self.source_code[start:self.position], self.line)
 
     def read_operator(self):
-        start = self.position
-        while self.current_char is not None and (self.current_char in special_keywords or (self.peek() is not None and self.current_char + self.peek() in special_keywords)):
-            if self.peek() is not None and self.current_char + self.peek() in special_keywords:
-                print(f"Found two-character operator: {self.current_char + self.peek()}")
-                if self.current_char + self.peek() == "//":
-                    self.skip_comment()
-                    return None
-                operator = self.current_char + self.peek()
-                line = self.line
-                self.advance(2)
-                return Token(special_keywords[operator], operator, line)
-            if self.current_char == "-" and self.peek() == "(":
-                operator = self.current_char
-                self.advance()
-                return Token(special_keywords[operator], operator, self.line)
-            if self.peek() == ";":
-                operator = self.current_char
-                self.advance()
-                return Token(special_keywords[operator], operator, self.line)
+        if self.peek() is not None and self.current_char + self.peek() in special_keywords:
+            if self.current_char + self.peek() == "//":
+                self.skip_comment()
+                return None
+            operator = self.current_char + self.peek()
+            line = self.line
+            self.advance(2)
+            return Token(special_keywords[operator], operator, line)
+        if self.current_char in special_keywords:
+            operator = self.current_char
             self.advance()
-        operator = self.source_code[start:self.position]
-        return Token(special_keywords[operator], operator, self.line)
+            return Token(special_keywords[operator], operator, self.line)
+        raise SSIError(f"Unknown operator {self.current_char}")
 
 
     def read_word(self):
