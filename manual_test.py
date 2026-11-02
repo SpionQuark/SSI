@@ -1,9 +1,13 @@
-from modules.parser import Parser
-from modules.lexer import Lexer
+from modules.evaluator import Evaluator
+from modules.helpers import SSIError
 
-code = "3 + 2;"
+codes = [
+    "-(2+3)",
+    "3*-2",
+    "3--2",
+    "x==-1",
+    "(1+2)*(3+4)"
+]
 
-tokens = Lexer(code).tokenize()
-print(tokens)
-parser = Parser(tokens).parse_expression()
-print(parser)
+for code in codes:
+    print(Evaluator().run(code + ";"))

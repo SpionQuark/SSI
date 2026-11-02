@@ -80,8 +80,15 @@ class Lexer:
                 line = self.line
                 self.advance(2)
                 return Token(special_keywords[operator], operator, line)
-            else:
+            if self.current_char == "-" and self.peek() == "(":
+                operator = self.current_char
                 self.advance()
+                return Token(special_keywords[operator], operator, self.line)
+            if self.peek() == ";":
+                operator = self.current_char
+                self.advance()
+                return Token(special_keywords[operator], operator, self.line)
+            self.advance()
         operator = self.source_code[start:self.position]
         return Token(special_keywords[operator], operator, self.line)
 
