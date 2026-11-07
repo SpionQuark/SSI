@@ -89,6 +89,7 @@ class Lexer:
         while self.current_char is not None and (self.current_char.isalnum() or self.current_char == '_'):
             self.advance()
         word = self.source_code[start:self.position]
+        print(word)
         if word in self.KEYWORDS:
             return Token(self.KEYWORDS[word], word, self.line)
         return Token('IDENTIFIER', word, self.line)

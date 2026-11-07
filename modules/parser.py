@@ -36,7 +36,7 @@ class Parser:
         statements = []
         while not self.check("EOF"):
             statements.append(self.parse_statement())
-        return Block(statements)
+        return Block(statements, 0)
 
     def parse_statement(self):
         if self.check("IDENTIFIER") and self.peek_type() == "ASSIGN":
@@ -50,10 +50,10 @@ class Parser:
 
     def parse_assignment(self):
         name = self.advance()
-        self.advance
+        self.advance()
         value = self.parse_expression()
         self.expect("SEMICOLON", "Expected ';' after assignment")
-        return Assign(name.value, value)
+        return Assign(name.value, value, name.line)
 
     def parse_expression_statement(self):
         expr = self.parse_expression()
@@ -69,7 +69,7 @@ class Parser:
                          "NOT_EQUAL", "GREATER_EQUAL", "LESS_EQUAL"):
             op = self.advance()
             right = self.parse_term()
-            left = BinaryOp(left, op.value, right)
+            left = BinaryOp(left, op.value, right, op.line)
         return left
 
     def parse_term(self):
@@ -77,7 +77,7 @@ class Parser:
         while self.check("PLUS", "MINUS"):
             op = self.advance()
             right = self.parse_factor()
-            left = BinaryOp(left, op.value, right)
+            left = BinaryOp(left, op.value, right, op.line)
         return left
 
     def parse_factor(self):
@@ -85,29 +85,31 @@ class Parser:
         while self.check("STAR", "SLASH"):
             op = self.advance()
             right = self.parse_unary()
-            left = BinaryOp(left, op.value, right)
+            left = BinaryOp(left, op.value, right, op.line)
         return left
 
     def parse_unary(self):
         if self.check("MINUS"):
             op = self.advance()
-            return UnaryOp(op.value, self.parse_unary())
+            return UnaryOp(op.value, self.parse_unary(), line=op.line)
         return self.parse_primary()
 
     def parse_primary(self):
         token = self.current()
         if self.match('NUMBER'):
-            return Number(float(token.value))
+            return Number(float(token.value), token.line)
         if self.match("STRING"):
-            return String(token.value)
+            return String(token.value, token.line)
         if self.match("TRUE"):
-            return Boolean(True)
+            return Boolean(True, token.line)
         if self.match("FALSE"):
-            return Boolean(False)
+            return Boolean(False, token.line)
         if self.match("IDENTIFIER"):
-            return Variable(token.value)
+            return Variable(token.value, token.line)
         if self.match("LPAREN"):
             expr = self.parse_expression()
             self.expect("RPAREN", "Expected ')' after expression")
             return expr
+        if self.match("ASSIGN"):
+            return self.parse_assignment()
         raise SSIError(f"Unexpected token {token.value!r}, {token.type!r}", token.line)

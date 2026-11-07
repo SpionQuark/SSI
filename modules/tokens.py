@@ -7,6 +7,8 @@ KEYWORDS = {
     "return": "RETURN",
     "true": "TRUE",
     "false": "FALSE",
+    "void": "VOID",
+    "func": "VOID"
 }
 OPERATORS = {
     "+": "PLUS",

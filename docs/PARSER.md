@@ -44,3 +44,10 @@ Since Step 1 is done (*parsing expressions*), now it is time to build the progra
 should by itself be a harder task than I'd like. However, once the basic build stands stable, building the language around
 it should be rather easy. 
 
+The step towards parsing an actual program would be altering our Lexer. 
+Simply enough we just have to build a list for keywords. Once again. 
+
+The good think about having ``tokens.py`` is, that anyone could alter how the language is interpreted or what he could write. So, parsing SSI could work in any given language and still work. Though the syntax is similar to JavaScript, one could change keywords for this to be more like Java or more like Python. It's anyones choice. 
+
+But first: Assigning values. ``x = 3`` won't work so far. Which is a somewhat issue. As I understand, I need a ``Scope``-class. Something that remembers, for every function or class, what variables are within that single class. It stores, probably a dict. If a function wants to access a variable it asks the current scope it is in whether it has the variable in his dict. 
+If that is so, we stop. Else we search outwards from child to parent.
